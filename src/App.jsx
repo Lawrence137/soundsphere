@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Releases from './pages/Releases';
 import Analytics from './pages/Analytics';
 import Welcome from './pages/Welcome';
+import MyMusic from './pages/MyMusic';
 
 // Placeholder components for other routes
 const Profile = () => <div className="p-6"><h1 className="text-2xl font-semibold text-gray-900">Profile</h1></div>;
@@ -29,6 +30,7 @@ function App() {
           
           {/* Protected routes */}
           <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+          <Route path="/my-music" element={<Layout><MyMusic /></Layout>} />
           <Route path="/releases" element={<Layout><Releases /></Layout>} />
           <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
           <Route path="/earnings" element={<Layout><Earnings /></Layout>} />
