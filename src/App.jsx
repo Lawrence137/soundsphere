@@ -9,6 +9,7 @@ import ForgotPasswordForm from './components/auth/ForgotPasswordForm';
 import Dashboard from './pages/Dashboard';
 import Releases from './pages/Releases';
 import Analytics from './pages/Analytics';
+import Welcome from './pages/Welcome';
 
 // Placeholder components for other routes
 const Profile = () => <div className="p-6"><h1 className="text-2xl font-semibold text-gray-900">Profile</h1></div>;
@@ -21,12 +22,12 @@ function App() {
       <Router>
         <Routes>
           {/* Public routes */}
+          <Route path="/" element={<Welcome />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/forgot-password" element={<ForgotPasswordForm />} />
           
           {/* Protected routes */}
-          <Route path="/" element={<Layout><Dashboard /></Layout>} />
           <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
           <Route path="/releases" element={<Layout><Releases /></Layout>} />
           <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
