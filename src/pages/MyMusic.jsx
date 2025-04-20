@@ -19,7 +19,7 @@ const INITIAL_TRACKS = [
     title: 'Aesthetic Night',
     type: 'Single',
     artist: 'Your Artist Name',
-    coverArt: 'https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=600&auto=format',
+    coverArt: 'https://images.unsplash.com/photo-1614149162883-504ce4d13909?w=600&auto=format',
     platforms: ['Spotify', 'Apple Music', 'YouTube Music', 'Amazon Music', 'TikTok'],
     status: 'active'
   },

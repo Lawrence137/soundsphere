@@ -67,7 +67,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
     <>
       {/* Backdrop with enhanced blur effect */}
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-lg transition-all duration-500 ease-in-out md:hidden ${
+        className={`fixed inset-0 bg-black/40 backdrop-blur-lg transition-all duration-500 ease-in-out md:hidden  ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       />
@@ -86,7 +86,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
           backgroundSize: '80px 80px, 60px 60px, 100% 100%, 100% 100%, 100% 100%',
           backgroundPosition: '0 0, 30px 30px, 0 0, 0 0, 0 0',
         }}
-        className={`fixed right-0 top-0 h-full w-[80%] max-w-sm shadow-2xl transition-transform duration-300 ease-out transform md:hidden
+        className={`fixed right-0 top-0 z-55 h-full w-[80%] max-w-sm shadow-2xl transition-transform duration-300 ease-out transform md:hidden
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}
           rounded-l-3xl
           before:absolute before:inset-0 before:bg-[url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle cx='50' cy='50' r='40' stroke='rgba(255,255,255,0.06)' stroke-width='1.5' stroke-dasharray='6,4'/%3E%3Cpath d='M50 30c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20zm0 8c-6.6 0-12 5.4-12 12s5.4 12 12 12 12-5.4 12-12-5.4-12-12-12zm0 5c3.9 0 7 3.1 7 7s-3.1 7-7 7-7-3.1-7-7 3.1-7 7-7z' fill='rgba(255,255,255,0.04)'/%3E%3C/g%3E%3C/svg%3E")]
