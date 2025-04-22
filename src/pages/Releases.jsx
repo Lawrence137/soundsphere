@@ -68,13 +68,24 @@ const Releases = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 relative py-4 sm:py-8 overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 z-0 opacity-10">
+        <div className="absolute top-0 left-0 w-full h-full bg-repeat" 
+             style={{ 
+               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+               backgroundSize: '30px 30px'
+             }}
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
-          <h1 className="text-2xl font-bold text-gray-900">Releases</h1>
+          <h1 className="text-2xl font-bold text-white">Releases</h1>
           <button
             onClick={() => setIsUploadModalOpen(true)}
-            className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 ease-in-out hover:shadow-lg"
           >
             <PlusIcon className="h-5 w-5 mr-2" />
             New Release
@@ -82,7 +93,7 @@ const Releases = () => {
         </div>
 
         {isUploadModalOpen && (
-          <div className="mt-6 sm:mt-8 bg-white rounded-lg shadow-lg p-4 sm:p-6">
+          <div className="mt-6 sm:mt-8 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl p-4 sm:p-6 border border-white/20">
             <div className="space-y-6 sm:space-y-8">
               {/* Cover Art Upload Section */}
               <div className="flex flex-col sm:flex-row sm:items-start gap-6">
@@ -285,8 +296,8 @@ const Releases = () => {
         {/* Existing Releases List */}
         {!isUploadModalOpen && (
           <div className="mt-6">
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-              <ul className="divide-y divide-gray-200">
+            <div className="bg-white/95 backdrop-blur-sm shadow-xl overflow-hidden sm:rounded-lg border border-white/20">
+              <ul className="divide-y divide-gray-200/50">
                 <li>
                   <div className="px-4 py-4 sm:px-6">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
@@ -294,7 +305,7 @@ const Releases = () => {
                         No releases yet
                       </p>
                       <div className="flex-shrink-0">
-                        <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                        <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
                           Get Started
                         </p>
                       </div>
