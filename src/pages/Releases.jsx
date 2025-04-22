@@ -68,13 +68,13 @@ const Releases = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
           <h1 className="text-2xl font-bold text-gray-900">Releases</h1>
           <button
             onClick={() => setIsUploadModalOpen(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <PlusIcon className="h-5 w-5 mr-2" />
             New Release
@@ -82,14 +82,14 @@ const Releases = () => {
         </div>
 
         {isUploadModalOpen && (
-          <div className="mt-8 bg-white rounded-lg shadow-lg p-6">
-            <div className="space-y-8">
+          <div className="mt-6 sm:mt-8 bg-white rounded-lg shadow-lg p-4 sm:p-6">
+            <div className="space-y-6 sm:space-y-8">
               {/* Cover Art Upload Section */}
-              <div className="flex items-start space-x-6">
-                <div className="flex-shrink-0">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-6">
+                <div className="w-full sm:w-auto flex justify-center sm:block">
                   <div className="relative">
                     {coverArt ? (
-                      <div className="relative w-40 h-40">
+                      <div className="relative w-full h-48 sm:w-40 sm:h-40">
                         <img
                           src={coverArt.preview}
                           alt="Cover art preview"
@@ -103,9 +103,9 @@ const Releases = () => {
                         </button>
                       </div>
                     ) : (
-                      <div className="w-40 h-40 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors">
+                      <div className="w-full h-48 sm:w-40 sm:h-40 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors">
                         <PhotoIcon className="w-10 h-10 text-gray-400" />
-                        <label className="mt-2 block text-sm font-medium text-gray-700 text-center cursor-pointer">
+                        <label className="mt-2 block text-sm font-medium text-gray-700 text-center cursor-pointer px-4">
                           Upload Cover Art
                           <input
                             type="file"
@@ -121,8 +121,8 @@ const Releases = () => {
 
                 {/* Release Info Form */}
                 <div className="flex-1 space-y-4">
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="col-span-1">
                       <label className="block text-sm font-medium text-gray-700">
                         Release Title
                       </label>
@@ -134,7 +134,7 @@ const Releases = () => {
                         placeholder="Enter release title"
                       />
                     </div>
-                    <div>
+                    <div className="col-span-1">
                       <label className="block text-sm font-medium text-gray-700">
                         Artist Name
                       </label>
@@ -146,7 +146,7 @@ const Releases = () => {
                         placeholder="Enter artist name"
                       />
                     </div>
-                    <div>
+                    <div className="col-span-1">
                       <label className="block text-sm font-medium text-gray-700">
                         Release Date
                       </label>
@@ -162,7 +162,7 @@ const Releases = () => {
                         />
                       </div>
                     </div>
-                    <div>
+                    <div className="col-span-1">
                       <label className="block text-sm font-medium text-gray-700">
                         Genre
                       </label>
@@ -187,9 +187,9 @@ const Releases = () => {
 
               {/* Track Upload Section */}
               <div>
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0 mb-4">
                   <h3 className="text-lg font-medium text-gray-900">Tracks</h3>
-                  <label className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                  <label className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
                     <MusicalNoteIcon className="h-5 w-5 mr-2" />
                     Add Tracks
                     <input
@@ -216,7 +216,7 @@ const Releases = () => {
                               <div
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
-                                className="flex items-center space-x-4 bg-white p-4 rounded-lg border border-gray-200 shadow-sm"
+                                className="flex items-center space-x-2 sm:space-x-4 bg-white p-3 sm:p-4 rounded-lg border border-gray-200 shadow-sm"
                               >
                                 <div
                                   {...provided.dragHandleProps}
@@ -224,8 +224,8 @@ const Releases = () => {
                                 >
                                   <ArrowsUpDownIcon className="h-5 w-5" />
                                 </div>
-                                <span className="text-gray-500 w-8">{track.position}</span>
-                                <div className="flex-1">
+                                <span className="text-gray-500 w-6 sm:w-8">{track.position}</span>
+                                <div className="flex-1 min-w-0">
                                   <input
                                     type="text"
                                     value={track.name}
@@ -234,14 +234,14 @@ const Releases = () => {
                                       newTracks[index].name = e.target.value;
                                       setTracks(newTracks);
                                     }}
-                                    className="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
+                                    className="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm truncate"
                                     placeholder="Track name"
                                   />
                                 </div>
-                                <span className="text-gray-500 text-sm">{track.duration}</span>
+                                <span className="hidden sm:inline text-gray-500 text-sm">{track.duration}</span>
                                 <button
                                   onClick={() => handleRemoveTrack(track.id)}
-                                  className="text-gray-400 hover:text-red-500"
+                                  className="text-gray-400 hover:text-red-500 flex-shrink-0"
                                 >
                                   <XMarkIcon className="h-5 w-5" />
                                 </button>
@@ -256,24 +256,24 @@ const Releases = () => {
                 </DragDropContext>
 
                 {tracks.length === 0 && (
-                  <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                  <div className="text-center py-8 sm:py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
                     <MusicalNoteIcon className="mx-auto h-12 w-12 text-gray-400" />
-                    <p className="mt-2 text-sm text-gray-500">Drag and drop audio files here or click Add Tracks</p>
+                    <p className="mt-2 text-sm text-gray-500 px-4">Drag and drop audio files here or click Add Tracks</p>
                   </div>
                 )}
               </div>
 
               {/* Submit Button */}
-              <div className="flex justify-end space-x-4">
+              <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 sm:gap-4">
                 <button
                   onClick={() => setIsUploadModalOpen(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="w-full sm:w-auto px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Create Release
                 </button>
@@ -289,22 +289,20 @@ const Releases = () => {
               <ul className="divide-y divide-gray-200">
                 <li>
                   <div className="px-4 py-4 sm:px-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
                       <p className="text-sm font-medium text-gray-600 truncate">
                         No releases yet
                       </p>
-                      <div className="ml-2 flex-shrink-0 flex">
+                      <div className="flex-shrink-0">
                         <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                           Get Started
                         </p>
                       </div>
                     </div>
-                    <div className="mt-2 sm:flex sm:justify-between">
-                      <div className="sm:flex">
-                        <p className="flex items-center text-sm text-gray-500">
-                          Click "New Release" to upload your first track
-                        </p>
-                      </div>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        Click "New Release" to upload your first track
+                      </p>
                     </div>
                   </div>
                 </li>
