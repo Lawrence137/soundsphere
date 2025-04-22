@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ChartBarIcon,
   MusicalNoteIcon,
@@ -15,10 +15,10 @@ import {
 } from '@heroicons/react/24/outline';
 
 const TIME_RANGES = [
-  { name: '7 Days', current: true },
-  { name: '30 Days' },
-  { name: '90 Days' },
-  { name: '1 Year' },
+  { id: '7d', name: '7 Days', days: 7 },
+  { id: '30d', name: '30 Days', days: 30 },
+  { id: '90d', name: '90 Days', days: 90 },
+  { id: '1y', name: '1 Year', days: 365 },
 ];
 
 const ANALYTICS_SECTIONS = [
@@ -67,7 +67,58 @@ const DEVICE_STATS = [
   { name: 'Tablet', percentage: 10, icon: DevicePhoneMobileIcon },
 ];
 
+const generateMockData = (days) => {
+  const data = [];
+  const now = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    data.push({
+      date: date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric'
+      }),
+      fullDate: date.toLocaleDateString('en-US', { 
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      }),
+      streams: Math.floor(Math.random() * 2000) + 1000,
+    });
+  }
+  return data;
+};
+
 const Analytics = () => {
+  const [selectedRange, setSelectedRange] = useState('7d');
+  const [analyticsData, setAnalyticsData] = useState(() => ({
+    ...ANALYTICS_SECTIONS[0],
+    data: generateMockData(7)
+  }));
+
+  // Calculate bar width based on time range
+  const getBarWidth = (timeRange) => {
+    switch (timeRange) {
+      case '7d': return 'w-16';
+      case '30d': return 'w-12';
+      case '90d': return 'w-8';
+      case '1y': return 'w-6';
+      default: return 'w-16';
+    }
+  };
+
+  const handleTimeRangeChange = (rangeId) => {
+    setSelectedRange(rangeId);
+    const selectedTimeRange = TIME_RANGES.find(range => range.id === rangeId);
+    setAnalyticsData(prev => ({
+      ...prev,
+      data: generateMockData(selectedTimeRange.days)
+    }));
+  };
+
+  // Get the maximum stream value for scaling the chart
+  const maxStreams = Math.max(...analyticsData.data.map(day => day.streams));
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="px-4 py-6 sm:px-6 lg:px-8">
@@ -80,9 +131,10 @@ const Analytics = () => {
           <div className="mt-4 md:mt-0 flex space-x-2">
             {TIME_RANGES.map((range) => (
               <button
-                key={range.name}
+                key={range.id}
+                onClick={() => handleTimeRangeChange(range.id)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  range.current
+                  selectedRange === range.id
                     ? 'bg-indigo-600 text-white'
                     : 'bg-white text-gray-600 hover:bg-gray-50'
                 }`}
@@ -106,16 +158,38 @@ const Analytics = () => {
               </div>
               <CalendarIcon className="h-5 w-5 text-gray-400" />
             </div>
-            <div className="h-64 flex items-end space-x-2">
-              {ANALYTICS_SECTIONS[0].data.map((day) => (
-                <div key={day.date} className="flex-1 flex flex-col items-center">
-                  <div
-                    className="w-full bg-purple-500 rounded-t-lg transition-all duration-300 hover:bg-purple-600"
-                    style={{ height: `${(day.streams / 2800) * 100}%` }}
-                  />
-                  <span className="text-xs text-gray-500 mt-2">{day.date}</span>
-                </div>
-              ))}
+            
+            {/* Chart Container with Horizontal Scroll */}
+            <div className="overflow-x-auto">
+              <div className={`h-64 flex items-end space-x-1 ${
+                selectedRange === '7d' ? 'min-w-full' : 
+                selectedRange === '30d' ? 'min-w-[800px]' : 
+                selectedRange === '90d' ? 'min-w-[1200px]' : 
+                'min-w-[2000px]'
+              }`}>
+                {analyticsData.data.map((day) => (
+                  <div 
+                    key={day.date} 
+                    className={`flex-none flex flex-col items-center group relative ${getBarWidth(selectedRange)}`}
+                  >
+                    <div
+                      className="w-full bg-purple-500 rounded-t-lg transition-all duration-300 hover:bg-purple-600 cursor-pointer"
+                      style={{ height: `${(day.streams / maxStreams) * 100}%` }}
+                    >
+                      <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                        {day.fullDate}: {day.streams.toLocaleString()} streams
+                      </div>
+                    </div>
+                    <span className="text-xs text-gray-500 mt-2 transform -rotate-45 origin-top-left whitespace-nowrap" 
+                      style={{
+                        fontSize: selectedRange === '7d' ? '0.75rem' : '0.65rem',
+                        marginLeft: '4px'
+                      }}>
+                      {day.date}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
