@@ -95,6 +95,13 @@ const MobileMenu = ({ isOpen, onClose }) => {
         {/* Glass effect top section */}
         <div className="absolute inset-x-0 top-0 h-32 bg-white/10 backdrop-blur-sm rounded-l-3xl" />
 
+        {/* Logo section */}
+        <div className="relative p-6 pt-8">
+          <Link to="/" className="text-2xl font-bold text-white hover:text-white/80 transition-colors duration-300">
+            SoundSphere
+          </Link>
+        </div>
+
         {/* User profile section with enhanced floating effect */}
         <div className="relative p-6 pt-8">
           <div className="flex items-center space-x-4">
