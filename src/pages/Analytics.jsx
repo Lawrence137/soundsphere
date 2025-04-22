@@ -1,102 +1,213 @@
 import React from 'react';
+import {
+  ChartBarIcon,
+  MusicalNoteIcon,
+  UsersIcon,
+  CurrencyDollarIcon,
+  ArrowTrendingUpIcon,
+  GlobeAltIcon,
+  HeartIcon,
+  ClockIcon,
+  CalendarIcon,
+  ChartPieIcon,
+  MapIcon,
+  DevicePhoneMobileIcon,
+} from '@heroicons/react/24/outline';
+
+const TIME_RANGES = [
+  { name: '7 Days', current: true },
+  { name: '30 Days' },
+  { name: '90 Days' },
+  { name: '1 Year' },
+];
+
+const ANALYTICS_SECTIONS = [
+  {
+    title: 'Streaming Trends',
+    icon: ChartBarIcon,
+    color: 'bg-purple-500',
+    data: [
+      { date: 'Mon', streams: 1200 },
+      { date: 'Tue', streams: 1800 },
+      { date: 'Wed', streams: 1500 },
+      { date: 'Thu', streams: 2100 },
+      { date: 'Fri', streams: 2400 },
+      { date: 'Sat', streams: 2800 },
+      { date: 'Sun', streams: 2200 },
+    ]
+  },
+  {
+    title: 'Audience Demographics',
+    icon: UsersIcon,
+    color: 'bg-blue-500',
+    data: [
+      { category: '18-24', percentage: 35 },
+      { category: '25-34', percentage: 45 },
+      { category: '35-44', percentage: 15 },
+      { category: '45+', percentage: 5 },
+    ]
+  },
+  {
+    title: 'Geographic Distribution',
+    icon: MapIcon,
+    color: 'bg-green-500',
+    data: [
+      { country: 'United States', percentage: 40 },
+      { country: 'United Kingdom', percentage: 25 },
+      { country: 'Germany', percentage: 15 },
+      { country: 'France', percentage: 10 },
+      { country: 'Others', percentage: 10 },
+    ]
+  }
+];
+
+const DEVICE_STATS = [
+  { name: 'Mobile', percentage: 65, icon: DevicePhoneMobileIcon },
+  { name: 'Desktop', percentage: 25, icon: ChartPieIcon },
+  { name: 'Tablet', percentage: 10, icon: DevicePhoneMobileIcon },
+];
 
 const Analytics = () => {
   return (
-    <div>
-      <h1 className="text-2xl font-semibold text-gray-900">Analytics</h1>
-      
-      <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {/* Stats cards */}
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg className="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
+    <div className="min-h-screen bg-gray-50">
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 tracking-tight mb-2">Analytics</h1>
+            <p className="text-lg text-gray-600">Detailed insights about your music's performance</p>
+          </div>
+          <div className="mt-4 md:mt-0 flex space-x-2">
+            {TIME_RANGES.map((range) => (
+              <button
+                key={range.name}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  range.current
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-white text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                {range.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Main Analytics Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Streaming Trends */}
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="bg-purple-100 p-2 rounded-lg">
+                  <ChartBarIcon className="h-6 w-6 text-purple-600" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">Streaming Trends</h2>
               </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Streams
-                  </dt>
-                  <dd className="flex items-baseline">
-                    <div className="text-2xl font-semibold text-gray-900">
-                      0
-                    </div>
-                  </dd>
-                </dl>
+              <CalendarIcon className="h-5 w-5 text-gray-400" />
+            </div>
+            <div className="h-64 flex items-end space-x-2">
+              {ANALYTICS_SECTIONS[0].data.map((day) => (
+                <div key={day.date} className="flex-1 flex flex-col items-center">
+                  <div
+                    className="w-full bg-purple-500 rounded-t-lg transition-all duration-300 hover:bg-purple-600"
+                    style={{ height: `${(day.streams / 2800) * 100}%` }}
+                  />
+                  <span className="text-xs text-gray-500 mt-2">{day.date}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Audience Demographics */}
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="bg-blue-100 p-2 rounded-lg">
+                  <UsersIcon className="h-6 w-6 text-blue-600" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">Audience Demographics</h2>
               </div>
+              <ChartPieIcon className="h-5 w-5 text-gray-400" />
+            </div>
+            <div className="space-y-4">
+              {ANALYTICS_SECTIONS[1].data.map((demo) => (
+                <div key={demo.category}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-900">{demo.category}</span>
+                    <span className="text-sm text-gray-500">{demo.percentage}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-500 h-2 rounded-full"
+                      style={{ width: `${demo.percentage}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Geographic Distribution */}
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="bg-green-100 p-2 rounded-lg">
+                  <MapIcon className="h-6 w-6 text-green-600" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">Geographic Distribution</h2>
+              </div>
+              <GlobeAltIcon className="h-5 w-5 text-gray-400" />
+            </div>
+            <div className="space-y-4">
+              {ANALYTICS_SECTIONS[2].data.map((geo) => (
+                <div key={geo.country}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-900">{geo.country}</span>
+                    <span className="text-sm text-gray-500">{geo.percentage}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full"
+                      style={{ width: `${geo.percentage}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Device Usage */}
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="bg-indigo-100 p-2 rounded-lg">
+                  <DevicePhoneMobileIcon className="h-6 w-6 text-indigo-600" />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">Device Usage</h2>
+              </div>
+              <DevicePhoneMobileIcon className="h-5 w-5 text-gray-400" />
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              {DEVICE_STATS.map((device) => (
+                <div key={device.name} className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-2 bg-indigo-100 rounded-full flex items-center justify-center">
+                    <device.icon className="h-8 w-8 text-indigo-600" />
+                  </div>
+                  <h3 className="text-sm font-medium text-gray-900">{device.name}</h3>
+                  <p className="text-2xl font-bold text-indigo-600">{device.percentage}%</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg className="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Total Earnings
-                  </dt>
-                  <dd className="flex items-baseline">
-                    <div className="text-2xl font-semibold text-gray-900">
-                      $0.00
-                    </div>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="p-5">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg className="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">
-                    Active Releases
-                  </dt>
-                  <dd className="flex items-baseline">
-                    <div className="text-2xl font-semibold text-gray-900">
-                      0
-                    </div>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div className="mt-8">
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">
-              Analytics Data
-            </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">
-              Your music performance metrics will appear here
-            </p>
-          </div>
-          <div className="border-t border-gray-200">
-            <div className="px-4 py-5 sm:p-6">
-              <p className="text-gray-500 text-center py-8">
-                No analytics data available yet. Upload your first release to see performance metrics.
-              </p>
-            </div>
-          </div>
+
+        {/* Export Section */}
+        <div className="mt-8 flex justify-end">
+          <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <ChartBarIcon className="h-5 w-5 mr-2" />
+            Export Report
+          </button>
         </div>
       </div>
     </div>
