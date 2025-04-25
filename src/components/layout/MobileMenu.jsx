@@ -69,15 +69,6 @@ const MobileMenu = ({ isOpen, onClose }) => {
           rounded-l-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900
           border-l border-white/10`}
       >
-        {/* Logo section with gradient */}
-        <div className="relative p-6 pt-8">
-          <Link 
-            to="/" 
-            className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
-          >
-            SoundSphere
-          </Link>
-        </div>
 
         {/* User profile section with glass effect */}
         <div className="relative px-6 pt-4">
