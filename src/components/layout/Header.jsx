@@ -15,7 +15,7 @@ const Header = () => {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <Link to="/" className="text-2xl font-bold text-indigo-600">
+                <Link to="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
                   SoundSphere
                 </Link>
               </div>
