@@ -77,7 +77,7 @@ const Welcome = () => {
             </div>
             <div className="text-center p-6 bg-white/5 backdrop-blur-sm rounded-xl">
               <div className="text-3xl md:text-4xl mb-4">📊</div>
-              <h3 className="text-lg md:text-xl font-semibold mb-2">Analyze</h3>
+              <h3 className="text-lg md:text-xl font-semibold mb-2">Analytics</h3>
               <p className="text-sm md:text-base opacity-90">Get detailed analytics and insights about your audience</p>
             </div>
             <div className="text-center p-6 bg-white/5 backdrop-blur-sm rounded-xl">
