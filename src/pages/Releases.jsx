@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { 
   CalendarIcon, 
@@ -25,6 +25,7 @@ const Releases = () => {
   const [tracks, setTracks] = useState([]);
   const [coverArt, setCoverArt] = useState(null);
   const [isDraggingFile, setIsDraggingFile] = useState(false);
+  const [isLoadingFiles, setIsLoadingFiles] = useState(false); // Added loading state
   const [releaseInfo, setReleaseInfo] = useState({
     title: '',
     artist: '',
@@ -32,25 +33,36 @@ const Releases = () => {
     genre: '',
     type: 'single',
   });
+  const fileInputRef = useRef(null); // Added ref to trigger file input programmatically
 
-  const handleTrackUpload = useCallback((event) => {
+  const handleTrackUpload = useCallback(async (event) => {
+    setIsLoadingFiles(true); // Show loading state
     const files = Array.from(event.target.files).filter(file => 
       file.type === 'audio/wav' || file.name.toLowerCase().endsWith('.wav')
     );
 
     if (files.length === 0) {
       alert('Please select WAV audio files only.');
+      setIsLoadingFiles(false);
       return;
     }
+
+    // Simulate processing delay (e.g., to calculate duration in a real app)
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const newTracks = files.map((file, index) => ({
       id: `track-${Date.now()}-${index}`,
       file,
       name: file.name.replace(/\.[^/.]+$/, ""),
-      duration: "0:00",
+      duration: "0:00", // In a real app, you’d calculate this using the Web Audio API
       position: tracks.length + index + 1,
     }));
     setTracks([...tracks, ...newTracks]);
+    setIsLoadingFiles(false);
+    // Reset the file input to allow re-selecting the same files
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   }, [tracks]);
 
   const handleDragOver = useCallback((e) => {
@@ -63,18 +75,23 @@ const Releases = () => {
     setIsDraggingFile(false);
   }, []);
 
-  const handleDrop = useCallback((e) => {
+  const handleDrop = useCallback(async (e) => {
     e.preventDefault();
     setIsDraggingFile(false);
-    
+    setIsLoadingFiles(true);
+
     const files = Array.from(e.dataTransfer.files).filter(file => 
       file.type === 'audio/wav' || file.name.toLowerCase().endsWith('.wav')
     );
-    
+
     if (files.length === 0) {
-      alert('Please drag and drop audio files only.');
+      alert('Please drag and drop WAV audio files only.');
+      setIsLoadingFiles(false);
       return;
     }
+
+    // Simulate processing delay
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const newTracks = files.map((file, index) => ({
       id: `track-${Date.now()}-${index}`,
@@ -84,6 +101,7 @@ const Releases = () => {
       position: tracks.length + index + 1,
     }));
     setTracks([...tracks, ...newTracks]);
+    setIsLoadingFiles(false);
   }, [tracks]);
 
   const handleCoverArtUpload = (event) => {
@@ -155,7 +173,7 @@ const Releases = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsUploadModalOpen(true)}
-            className="group w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out"
+            className="group w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out touch-manipulation"
           >
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-50 blur-xl transition-opacity"></span>
             <span className="relative flex items-center">
@@ -195,7 +213,7 @@ const Releases = () => {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => setCoverArt(null)}
-                            className="absolute -top-2 -right-2 p-2 bg-red-100 rounded-full text-red-600 hover:bg-red-200 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute -top-2 -right-2 p-2 bg-red-100 rounded-full text-red-600 hover:bg-red-200 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity touch-manipulation"
                           >
                             <XMarkIcon className="w-4 h-4" />
                           </motion.button>
@@ -323,16 +341,25 @@ const Releases = () => {
                     <motion.label
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 rounded-xl text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-md hover:shadow-lg cursor-pointer transition-all duration-200"
+                      className="relative w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 rounded-xl text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 shadow-md hover:shadow-lg cursor-pointer transition-all duration-200 touch-manipulation"
                     >
-                      <MusicalNoteIcon className="h-5 w-5 mr-2" />
-                      Add Tracks
+                      {isLoadingFiles ? (
+                        <svg className="w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                      ) : (
+                        <MusicalNoteIcon className="h-5 w-5 mr-2" />
+                      )}
+                      <span>{isLoadingFiles ? 'Processing...' : 'Add Tracks'}</span>
                       <input
+                        ref={fileInputRef}
                         type="file"
                         multiple
-                        accept=".wav,audio/wav"
+                        accept="audio/wav,.wav"
                         onChange={handleTrackUpload}
                         className="hidden"
+                        disabled={isLoadingFiles}
                       />
                     </motion.label>
                   </div>
@@ -366,7 +393,7 @@ const Releases = () => {
                                         ? provided.draggableProps.style.transform
                                         : "none",
                                     }}
-                                    className={`flex items-center space-x-4 p-4 rounded-xl border shadow-sm transition-all duration-200 ${
+                                    className={`flex items-center space-x-4 p-4 rounded-xl border shadow-sm transition-all duration-200 touch-manipulation ${
                                       snapshot.isDragging
                                         ? 'bg-purple-50 border-purple-200 shadow-lg'
                                         : 'bg-white border-gray-200 hover:border-purple-200 hover:shadow-md'
@@ -374,7 +401,7 @@ const Releases = () => {
                                   >
                                     <div
                                       {...provided.dragHandleProps}
-                                      className="cursor-move text-gray-400 hover:text-purple-600 transition-colors"
+                                      className="cursor-move text-gray-400 hover:text-purple-600 transition-colors touch-manipulation"
                                     >
                                       <ArrowsUpDownIcon className="h-5 w-5" />
                                     </div>
@@ -401,7 +428,7 @@ const Releases = () => {
                                       whileHover={{ scale: 1.1 }}
                                       whileTap={{ scale: 0.9 }}
                                       onClick={() => handleRemoveTrack(track.id)}
-                                      className="text-gray-400 hover:text-red-500 transition-colors"
+                                      className="text-gray-400 hover:text-red-500 transition-colors touch-manipulation"
                                     >
                                       <XMarkIcon className="h-5 w-5" />
                                     </motion.button>
@@ -447,7 +474,7 @@ const Releases = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setIsUploadModalOpen(false)}
-                    className="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors"
+                    className="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors touch-manipulation"
                   >
                     Cancel
                   </motion.button>
@@ -455,7 +482,8 @@ const Releases = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="w-full sm:w-auto px-6 py-2 rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
+                    className="w-full sm:w-auto px-6 py-2 rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200 touch-manipulation"
+                    disabled={isLoadingFiles || tracks.length === 0}
                   >
                     Create Release
                   </motion.button>
@@ -504,7 +532,6 @@ const Releases = () => {
         )}
       </div>
 
-      {/* Add animation keyframes */}
       <style jsx>{`
         @keyframes gradient-xy {
           0% {
@@ -522,9 +549,37 @@ const Releases = () => {
           animation: gradient-xy 15s ease infinite;
           background-size: 400% 400%;
         }
+
+        /* Improve touch interactions on mobile */
+        .touch-manipulation {
+          touch-action: manipulation;
+        }
+
+        /* Ensure buttons have sufficient tap target size */
+        button, label {
+          min-height: 44px;
+          min-width: 44px;
+        }
+
+        /* Disable hover effects on mobile */
+        @media (hover: none) {
+          .group:hover .opacity-0 {
+            opacity: 0 !important;
+          }
+          .hover\\:shadow-lg:hover,
+          .hover\\:shadow-xl:hover {
+            box-shadow: none !important;
+          }
+          .hover\\:border-purple-500:hover {
+            border-color: #d8b4fe !important;
+          }
+          .hover\\:bg-gray-50:hover {
+            background-color: #fff !important;
+          }
+        }
       `}</style>
     </motion.div>
   );
 };
 
-export default Releases; 
+export default Releases;
