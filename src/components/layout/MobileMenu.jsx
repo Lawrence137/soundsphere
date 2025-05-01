@@ -4,6 +4,12 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const navigation = [
   { 
+    name: 'Profile', 
+    href: '/profile', 
+    icon: 'M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z',
+    gradient: 'from-fuchsia-500 to-pink-500'
+  },
+  { 
     name: 'New Release', 
     href: '/releases', 
     icon: 'M12 6v6m0 0v6m0-6h6m-6 0H6',
@@ -64,12 +70,11 @@ const MobileMenu = ({ isOpen, onClose }) => {
       {/* Sliding menu with enhanced gradient background */}
       <div
         ref={menuRef}
-        className={`fixed right-0 top-0 z-55 h-full w-[85%] max-w-sm shadow-2xl transition-transform duration-300 ease-out transform md:hidden
+        className={`fixed right-0 top-0 z-50 h-full w-[85%] max-w-sm shadow-2xl transition-transform duration-300 ease-out transform md:hidden
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}
           rounded-l-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900
           border-l border-white/10`}
       >
-
         {/* User profile section with glass effect */}
         <div className="relative px-6 pt-4">
           <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-sm">
@@ -141,7 +146,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
         </nav>
 
         {/* Enhanced bottom section with glass effect */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-black/20 backdrop-blur-sm border-t border-white/10">
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-black/20 backdrop RosyBrown backdrop-blur-sm border-t border-white/10">
           <button
             onClick={() => {
               logout();
@@ -197,4 +202,4 @@ const MobileMenu = ({ isOpen, onClose }) => {
   );
 };
 
-export default MobileMenu; 
+export default MobileMenu;
