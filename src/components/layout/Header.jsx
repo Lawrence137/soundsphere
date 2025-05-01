@@ -29,6 +29,7 @@ const Header = () => {
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Releases', href: '/releases' },
     { name: 'Analytics', href: '/analytics' },
+    { name: 'Profile', href: '/profile' },
   ];
 
   const menuItems = [

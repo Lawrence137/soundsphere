@@ -11,9 +11,9 @@ import Releases from './pages/Releases';
 import Analytics from './pages/Analytics';
 import Welcome from './pages/Welcome';
 import MyMusic from './pages/MyMusic';
+import Profile from './pages/Profile';
 
 // Placeholder components for other routes
-const Profile = () => <div className="p-6"><h1 className="text-2xl font-semibold text-gray-900">Profile</h1></div>;
 const Settings = () => <div className="p-6"><h1 className="text-2xl font-semibold text-gray-900">Settings</h1></div>;
 const Earnings = () => <div className="p-6"><h1 className="text-2xl font-semibold text-gray-900">Earnings</h1></div>;
 
