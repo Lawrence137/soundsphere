@@ -78,14 +78,14 @@ const Finance = () => {
         className="p-6 md:p-8"
       >
         {/* Header */}
-        <motion.div variants={itemVariants} className="mb-8">
+        {/* <motion.div variants={itemVariants} className="mb-8">
           <h1 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
             Hey {user?.name || 'Artist'}, Let’s Talk Money! 💸
           </h1>
           <p className="text-gray-400 mt-2 text-lg">
             Your royalty earnings, beautifully summarized.
           </p>
-        </motion.div>
+        </motion.div> */}
 
         {/* Royalty Metrics */}
         <motion.div
