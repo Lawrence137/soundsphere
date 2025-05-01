@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { motion } from 'framer-motion';
-import { memo } from 'react'; // Added for memoization
+import { memo } from 'react';
 
 const navigation = [
   { 
@@ -42,9 +42,8 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
   const location = useLocation();
   const menuRef = useRef(null);
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [notifications] = useState(3); // Removed setNotifications to avoid unnecessary state updates
+  const [notifications] = useState(3);
 
-  // Memoized handler to prevent re-creation on every render
   const handleClickOutside = useCallback((event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       onClose();
@@ -71,12 +70,13 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
     });
   }, []);
 
-  // Simplified animation variants for better performance on mobile
+  // Animation variants for backdrop
   const backdropVariants = {
-    open: { opacity: 1 },
-    closed: { opacity: 0 },
+    open: { opacity: 1, backdropFilter: 'blur(4px)' },
+    closed: { opacity: 0, backdropFilter: 'blur(0px)' },
   };
 
+  // Animation variants for menu
   const menuVariants = {
     open: { x: 0 },
     closed: { x: '100%' },
@@ -84,30 +84,28 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Simplified backdrop animation */}
+      {/* Backdrop with blur effect */}
       <motion.div
         variants={backdropVariants}
         initial="closed"
         animate={isOpen ? 'open' : 'closed'}
-        transition={{ duration: 0.3 }} // Reduced duration for faster animation
-        className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-all duration-300 ease-in-out md:hidden ${
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        className={`fixed inset-0 bg-black/50 transition-all duration-300 ease-in-out md:hidden ${
           isOpen ? 'pointer-events-auto' : 'pointer-events-none'
-        }`} // Reduced blur intensity
+        }`}
       />
 
-      {/* Sliding menu with optimized design */}
+      {/* Sliding menu */}
       <motion.div
         ref={menuRef}
         variants={menuVariants}
         initial="closed"
         animate={isOpen ? 'open' : 'closed'}
-        transition={{ type: 'spring', stiffness: 80, damping: 20 }} // Slightly less stiff spring for faster animation
-        className={`fixed right-0 top-0 z-50 h-full w-[80%] max-w-xs shadow-lg md:hidden
-          rounded-l-2xl bg-gray-900/90 backdrop-blur-sm
-          border-l border-white/10 overflow-y-auto`} // Reduced blur and simplified gradient
+        transition={{ type: 'spring', stiffness: 120, damping: 20, mass: 0.8 }}
+        className="fixed right-0 top-0 z-50 h-full w-[80%] max-w-xs shadow-lg md:hidden rounded-l-2xl bg-gray-900/90 border-l border-white/10 overflow-y-auto"
       >
-        {/* User profile section with simplified effects */}
-        <div className="relative px-4 pt-4 pb-3">
+        {/* User profile section */}
+        <div className="relative px-4 pt-14 pb-3">
           <div className="p-3 rounded-xl bg-white/10 border border-white/10">
             <div className="flex items-center space-x-3">
               <div className="relative group">
@@ -131,7 +129,7 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Navigation links with reduced animations */}
+        {/* Navigation links */}
         <nav className="relative px-3 py-3">
           <div className="space-y-1">
             {navigation.map((item, index) => {
@@ -141,17 +139,16 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
                   key={item.name}
                   to={item.href}
                   onClick={onClose}
-                  className={`group flex items-center px-3 py-2 rounded-lg transition-colors duration-200
-                    ${
-                      isActive
-                        ? `bg-gradient-to-r ${item.gradient} text-white`
-                        : 'text-white/80 hover:bg-white/5 hover:text-white'
-                    }`} // Removed transform animations
+                  className={`group flex items-center px-3 py-2 rounded-lg transition-colors duration-200 ${
+                    isActive
+                      ? `bg-gradient-to-r ${item.gradient} text-white`
+                      : 'text-white/80 hover:bg-white/5 hover:text-white'
+                  }`}
                 >
                   <svg
                     className={`h-4 w-4 mr-2 ${
                       isActive ? 'text-white' : 'text-white/60 group-hover:text-white'
-                    }`} // Removed transition for icons
+                    }`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -177,40 +174,41 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
           </div>
         </nav>
 
-        {/* Simplified Additional Features Section */}
+        {/* Additional Features Section */}
         <div className="px-3 py-3">
           <div className="p-3 rounded-xl bg-white/10 border border-white/10">
             {/* Theme Toggle */}
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                <svg className="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
                 <span className="text-white/80 font-medium text-sm">Theme</span>
               </div>
               <button
                 onClick={toggleTheme}
-                className="relative w-10 h-5 bg-white/10 rounded-full p-1"
+                className="relative w-12 h-6 bg-gray-700/50 rounded-full p-1 shadow-inner touch-manipulation"
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 <motion.div
-                  className="w-3 h-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full"
-                  animate={{ x: isDarkMode ? 0 : 20 }}
-                  transition={{ type: 'spring', stiffness: 150, damping: 20 }} // Simplified spring
+                  className="w-4 h-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full shadow-md"
+                  animate={{ x: isDarkMode ? 0 : 24 }}
+                  transition={{ type: 'spring', stiffness: 150, damping: 20 }}
                 />
               </button>
             </div>
 
             {/* Social Links */}
-            <div className="flex justify-center space-x-3">
+            <div className="flex justify-center space-x-4">
               {['twitter', 'instagram', 'linkedin'].map((platform) => (
                 <a
                   key={platform}
                   href={`https://${platform}.com`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group p-1.5 rounded-full bg-white/5 hover:bg-white/10"
+                  className="group p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors duration-200 touch-manipulation"
                 >
-                  <svg className="w-4 h-4 text-white/60 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-white/60 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-14a1 1 0 00-1 1v4a1 1 0 002 0V7a1 1 0 00-1-1zm0 8a1 1 0 100 2 1 1 0 000-2z" />
                   </svg>
                 </a>
@@ -219,31 +217,31 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Simplified bottom section */}
+        {/* Bottom section */}
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-900/90 border-t border-white/10">
           <button
             onClick={() => {
               logout();
               onClose();
             }}
-            className="w-full px-3 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center space-x-2"
+            className="w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center space-x-2 shadow-md hover:shadow-lg transition-shadow duration-200 touch-manipulation"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
             <span>Sign out</span>
           </button>
         </div>
 
-        {/* Simplified close button */}
+        {/* Close button */}
         <motion.button
           onClick={onClose}
           whileTap={{ scale: 0.9 }}
-          className="absolute top-3 right-3 p-1.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-600"
+          className="absolute top-4 right-4 p-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 shadow-md hover:shadow-lg transition-shadow duration-200 touch-manipulation"
+          aria-label="Close menu"
         >
-          <span className="sr-only">Close menu</span>
           <svg
-            className="h-5 w-5 text-white"
+            className="h-6 w-6 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -259,12 +257,6 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
       </motion.div>
 
       <style jsx>{`
-        /* Removed slideInRight animation to reduce load */
-        .glass-effect {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
         ::-webkit-scrollbar {
           width: 4px;
         }
@@ -282,7 +274,31 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
           background: #9333ea;
         }
 
-        /* Reduce effects on mobile */
+        /* Improve touch interactions */
+        .touch-manipulation {
+          touch-action: manipulation;
+        }
+
+        /* Ensure buttons have sufficient tap target size */
+        button,
+        a {
+          min-height: 44px;
+          min-width: 44px;
+        }
+
+        /* Optimize for reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .transition-all,
+          .transition-colors,
+          .transition-shadow {
+            transition: none !important;
+          }
+          motion.div {
+            transition: none !important;
+          }
+        }
+
+        /* Optimize for mobile performance */
         @media (max-width: 640px) {
           .backdrop-blur-sm {
             backdrop-filter: blur(2px);
