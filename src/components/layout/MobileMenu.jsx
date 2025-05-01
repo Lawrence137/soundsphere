@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { motion } from 'framer-motion';
 
 const navigation = [
   { 
@@ -39,6 +40,8 @@ const MobileMenu = ({ isOpen, onClose }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const menuRef = useRef(null);
+  const [isDarkMode, setIsDarkMode] = useState(true); // Dark mode toggle state
+  const [notifications, setNotifications] = useState(3); // Example notification count
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -58,45 +61,63 @@ const MobileMenu = ({ isOpen, onClose }) => {
     };
   }, [isOpen, onClose]);
 
+  // Toggle dark/light mode (example implementation)
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    // In a real app, you might update a global theme context or CSS variables
+    document.documentElement.classList.toggle('light-theme', !isDarkMode);
+  };
+
   return (
     <>
-      {/* Enhanced backdrop with blur effect */}
-      <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-lg transition-all duration-500 ease-in-out md:hidden ${
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      {/* Enhanced backdrop with gradient blur effect */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isOpen ? 1 : 0 }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        className={`fixed inset-0 bg-gradient-to-br from-black/70 via-purple-950/70 to-pink-950/70 backdrop-blur-md transition-all duration-500 ease-in-out md:hidden ${
+          isOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       />
 
-      {/* Sliding menu with enhanced gradient background */}
-      <div
+      {/* Sliding menu with glassmorphic design */}
+      <motion.div
         ref={menuRef}
-        className={`fixed right-0 top-0 z-50 h-full w-[85%] max-w-sm shadow-2xl transition-transform duration-300 ease-out transform md:hidden
-          ${isOpen ? 'translate-x-0' : 'translate-x-full'}
-          rounded-l-3xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900
-          border-l border-white/10`}
+        initial={{ x: '100%' }}
+        animate={{ x: isOpen ? 0 : '100%' }}
+        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+        className={`fixed right-0 top-0 z-50 h-full w-[85%] max-w-sm shadow-2xl md:hidden
+          rounded-l-3xl bg-gradient-to-br from-gray-900/80 via-gray-800/80 to-gray-900/80 backdrop-blur-lg
+          border-l border-white/20 overflow-y-auto`} // Added overflow-y-auto for scroll if needed
       >
-        {/* User profile section with glass effect */}
-        <div className="relative px-6 pt-4">
-          <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-sm">
+        {/* User profile section with glass effect and gradient border */}
+        <div className="relative px-6 pt-6 pb-4">
+          <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
             <div className="flex items-center space-x-4">
               <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full opacity-75 group-hover:opacity-100 blur transition-all duration-300"></div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full opacity-70 group-hover:opacity-100 blur transition-all duration-300"></div>
                 <img
-                  className="relative h-14 w-14 rounded-full ring-2 ring-white/20 transition-transform duration-300 group-hover:scale-105"
+                  className="relative h-14 w-14 rounded-full ring-2 ring-white/30 transition-transform duration-300 group-hover:scale-105"
                   src={user?.photoURL || 'https://via.placeholder.com/40'}
                   alt=""
                 />
+                {/* Notification badge on profile */}
+                {notifications > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center border-2 border-white/30 animate-pulse">
+                    {notifications}
+                  </span>
+                )}
               </div>
-              <div>
-                <p className="text-lg font-semibold text-white">{user?.name || 'Guest'}</p>
-                <p className="text-sm text-white/70">{user?.email}</p>
+              <div className="flex-1">
+                <p className="text-lg font-semibold text-white truncate">{user?.name || 'Guest'}</p>
+                <p className="text-sm text-white/70 truncate">{user?.email}</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Navigation links with enhanced hover effects */}
-        <nav className="relative px-4 py-6">
+        {/* Navigation links with modern hover effects */}
+        <nav className="relative px-4 py-4">
           <div className="space-y-2">
             {navigation.map((item, index) => {
               const isActive = location.pathname === item.href;
@@ -106,14 +127,14 @@ const MobileMenu = ({ isOpen, onClose }) => {
                   to={item.href}
                   onClick={onClose}
                   style={{
-                    animationDelay: `${index * 50}ms`,
+                    animationDelay: `${index * 100}ms`,
                   }}
                   className={`group flex items-center px-4 py-3 rounded-xl transition-all duration-300
                     ${isOpen ? 'animate-slideInRight' : ''}
                     ${
                       isActive
                         ? `bg-gradient-to-r ${item.gradient} text-white shadow-lg`
-                        : 'text-white/80 hover:bg-white/10 hover:text-white'
+                        : 'text-white/90 hover:bg-white/10 hover:text-white'
                     }`}
                 >
                   <svg
@@ -145,14 +166,57 @@ const MobileMenu = ({ isOpen, onClose }) => {
           </div>
         </nav>
 
+        {/* Additional Features Section */}
+        <div className="px-4 py-4">
+          <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
+            {/* Theme Toggle */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <svg className="w-5 h-5 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span className="text-white/90 font-medium">Theme</span>
+              </div>
+              <button
+                onClick={toggleTheme}
+                className="relative w-12 h-6 bg-white/20 rounded-full p-1 transition-all duration-300"
+              >
+                <motion.div
+                  className="w-4 h-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full"
+                  animate={{ x: isDarkMode ? 0 : 24 }}
+                  transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                />
+              </button>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex justify-center space-x-4">
+              {['twitter', 'instagram', 'linkedin'].map((platform) => (
+                <a
+                  key={platform}
+                  href={`https://${platform}.com`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300"
+                >
+                  <svg className="w-5 h-5 text-white/70 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+                    {/* Simplified icon path for demo; replace with actual SVG paths for each platform */}
+                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-14a1 1 0 00-1 1v4a1 1 0 002 0V7a1 1 0 00-1-1zm0 8a1 1 0 100 2 1 1 0 000-2z" />
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Enhanced bottom section with glass effect */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-black/20 backdrop RosyBrown backdrop-blur-sm border-t border-white/10">
+        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-900/90 to-gray-800/90 backdrop-blur-md border-t border-white/20">
           <button
             onClick={() => {
               logout();
               onClose();
             }}
-            className="w-full px-4 py-3 text-sm font-medium text-white bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 group hover:scale-[0.98]"
+            className="w-full px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 group hover:scale-[0.98] shadow-lg hover:shadow-xl"
           >
             <svg className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -162,9 +226,11 @@ const MobileMenu = ({ isOpen, onClose }) => {
         </div>
 
         {/* Enhanced close button with gradient hover effect */}
-        <button
+        <motion.button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 transition-all duration-300 hover:rotate-90 hover:scale-110"
+          whileHover={{ rotate: 90, scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="absolute top-4 right-4 p-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg"
         >
           <span className="sr-only">Close menu</span>
           <svg
@@ -180,22 +246,49 @@ const MobileMenu = ({ isOpen, onClose }) => {
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       <style jsx>{`
         @keyframes slideInRight {
           from {
             opacity: 0;
-            transform: translateX(1rem);
+            transform: translateX(2rem);
           }
           to {
             opacity: 1;
             transform: translateX(0);
           }
         }
+
         .animate-slideInRight {
-          animation: slideInRight 0.5s ease-out forwards;
+          animation: slideInRight 0.6s ease-out forwards;
+        }
+
+        /* Glassmorphic effects */
+        .glass-effect {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Custom scrollbar for the menu */
+        ::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #a855f7, #ec4899);
+          border-radius: 12px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(180deg, #9333ea, #db2777);
         }
       `}</style>
     </>
