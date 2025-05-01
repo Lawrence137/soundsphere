@@ -12,7 +12,7 @@ import Analytics from './pages/Analytics';
 import Welcome from './pages/Welcome';
 import MyMusic from './pages/MyMusic';
 import Profile from './pages/Profile';
-
+import Finance from './pages/Finance';
 // Placeholder components for other routes
 const Settings = () => <div className="p-6"><h1 className="text-2xl font-semibold text-gray-900">Settings</h1></div>;
 const Earnings = () => <div className="p-6"><h1 className="text-2xl font-semibold text-gray-900">Earnings</h1></div>;
@@ -36,6 +36,7 @@ function App() {
           <Route path="/earnings" element={<Layout><Earnings /></Layout>} />
           <Route path="/profile" element={<Layout><Profile /></Layout>} />
           <Route path="/settings" element={<Layout><Settings /></Layout>} />
+          <Route path="/finance" element={<Layout><Finance /></Layout>} />
         </Routes>
       </Router>
     </AuthProvider>
