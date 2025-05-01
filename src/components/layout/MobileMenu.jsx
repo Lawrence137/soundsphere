@@ -23,12 +23,12 @@ const navigation = [
     icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
     gradient: 'from-green-500 to-emerald-500'
   },
-  { 
-    name: 'My Music', 
-    href: '/my-music', 
-    icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3',
-    gradient: 'from-orange-500 to-amber-500'
-  },
+  // { 
+  //   name: 'My Music', 
+  //   href: '/my-music', 
+  //   icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3',
+  //   gradient: 'from-orange-500 to-amber-500'
+  // },
   { 
     name: 'Analytics', 
     href: '/analytics', 
