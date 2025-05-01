@@ -6,12 +6,12 @@ import { motion } from 'framer-motion';
 const Finance = () => {
   const { user } = useAuth();
 
-  // Mock royalty data - replace with real data from your backend
+  // Mock royalty data with larger numbers to test overflow
   const royaltyStats = {
-    totalEarnings: 1230.45,
-    monthlyEarnings: 450.75,
-    pendingPayouts: 120.00,
-    lastPayout: 180.50,
+    totalEarnings: 1523045.67, // Larger number to test overflow
+    monthlyEarnings: 245075.89,
+    pendingPayouts: 120000.00,
+    lastPayout: 180050.12,
   };
 
   const recentTransactions = [
@@ -90,7 +90,7 @@ const Finance = () => {
         {/* Royalty Metrics */}
         <motion.div
           variants={containerVariants}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 w-full max-w-full"
         >
           {[
             {
@@ -121,10 +121,10 @@ const Finance = () => {
             <motion.div
               key={stat.label}
               variants={itemVariants}
-              className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:bg-white/20 transition-all duration-300 group"
+              className="bg-white/10 backdrop-blur-lg rounded-xl p-4 sm:p-6 border border-white/10 hover:bg-white/20 transition-all duration-300 group w-full"
             >
               <div className="flex items-center space-x-4">
-                <div className={`p-3 rounded-lg bg-gradient-to-br ${stat.gradient} transform group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`p-3 rounded-lg bg-gradient-to-br ${stat.gradient} transform group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
                   <svg
                     className="h-6 w-6 text-white"
                     fill="none"
@@ -139,9 +139,9 @@ const Finance = () => {
                     />
                   </svg>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-400">{stat.label}</p>
-                  <p className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 group-hover:from-purple-400 group-hover:to-pink-600 transition-all duration-300">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-gray-400 truncate">{stat.label}</p>
+                  <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 group-hover:from-purple-400 group-hover:to-pink-600 transition-all duration-300 whitespace-nowrap overflow-hidden text-ellipsis">
                     {stat.value}
                   </p>
                 </div>
@@ -153,7 +153,7 @@ const Finance = () => {
         {/* Recent Transactions and Quick Actions */}
         <motion.div
           variants={containerVariants}
-          className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 w-full max-w-full"
         >
           {/* Transactions Section */}
           <motion.div
@@ -277,7 +277,7 @@ const Finance = () => {
         {/* Bonus: Earnings Trend Card */}
         <motion.div
           variants={itemVariants}
-          className="mt-8 bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/10"
+          className="mt-8 bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/10 w-full max-w-full"
         >
           <h2 className="text-2xl font-semibold text-white mb-4">Earnings Trend</h2>
           <div className="relative h-64 flex items-center justify-center">
@@ -285,7 +285,6 @@ const Finance = () => {
               <p>Interactive Earnings Chart Coming Soon! 📈</p>
               <p className="text-sm mt-2">Track your earnings growth over time.</p>
             </div>
-            {/* Placeholder for a chart - you can integrate Chart.js or another library here */}
           </div>
         </motion.div>
       </motion.main>
