@@ -70,13 +70,11 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
     });
   }, []);
 
-  // Animation variants for backdrop
   const backdropVariants = {
     open: { opacity: 1, backdropFilter: 'blur(4px)' },
     closed: { opacity: 0, backdropFilter: 'blur(0px)' },
   };
 
-  // Animation variants for menu
   const menuVariants = {
     open: { x: 0 },
     closed: { x: '100%' },
@@ -84,7 +82,6 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Backdrop with blur effect */}
       <motion.div
         variants={backdropVariants}
         initial="closed"
@@ -95,7 +92,6 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
         }`}
       />
 
-      {/* Sliding menu */}
       <motion.div
         ref={menuRef}
         variants={menuVariants}
@@ -104,7 +100,6 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
         transition={{ type: 'spring', stiffness: 120, damping: 20, mass: 0.8 }}
         className="fixed right-0 top-0 z-50 h-full w-[80%] max-w-xs shadow-lg md:hidden rounded-l-2xl bg-gray-900/90 border-l border-white/10 overflow-y-auto"
       >
-        {/* User profile section */}
         <div className="relative px-4 pt-14 pb-3">
           <div className="p-3 rounded-xl bg-white/10 border border-white/10">
             <div className="flex items-center space-x-3">
@@ -129,7 +124,6 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Navigation links */}
         <nav className="relative px-3 py-3">
           <div className="space-y-1">
             {navigation.map((item, index) => {
@@ -174,7 +168,6 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
           </div>
         </nav>
 
-        {/* Additional Features Section */}
         <div className="px-3 py-3">
           <div className="p-3 rounded-xl bg-white/10 border border-white/10">
             {/* Theme Toggle */}
@@ -187,37 +180,63 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
               </div>
               <button
                 onClick={toggleTheme}
-                className="relative w-12 h-6 bg-gray-700/50 rounded-full p-1 shadow-inner touch-manipulation"
+                className="relative w-12 h-6 bg-gray-800/70 rounded-full p-1 shadow-inner border border-white/10 touch-manipulation"
                 aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 <motion.div
-                  className="w-4 h-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full shadow-md"
-                  animate={{ x: isDarkMode ? 0 : 24 }}
+                  className="w-5 h-5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center shadow-md"
+                  animate={{ x: isDarkMode ? 0 : 22 }}
                   transition={{ type: 'spring', stiffness: 150, damping: 20 }}
-                />
+                >
+                  {isDarkMode ? (
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  )}
+                </motion.div>
               </button>
             </div>
 
             {/* Social Links */}
-            <div className="flex justify-center space-x-4">
-              {['twitter', 'instagram', 'linkedin'].map((platform) => (
-                <a
-                  key={platform}
-                  href={`https://${platform}.com`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors duration-200 touch-manipulation"
-                >
-                  <svg className="w-5 h-5 text-white/60 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-14a1 1 0 00-1 1v4a1 1 0 002 0V7a1 1 0 00-1-1zm0 8a1 1 0 100 2 1 1 0 000-2z" />
-                  </svg>
-                </a>
-              ))}
-            </div>
+            {/* <div className="flex justify-center space-x-4">
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors duration-200 border border-white/10 shadow-md touch-manipulation"
+              >
+                <svg className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors duration-200 border border-white/10 shadow-md touch-manipulation"
+              >
+                <svg className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.332.014 7.052.072 3.668.227 1.981 1.97 1.826 5.332.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 7.052.155 3.362 1.898 5.049 5.26 5.204C8.332 23.986 8.741 24 12 24c3.259 0 3.668-.014 7.052-.072 3.362-.155 5.049-1.898 5.204-5.26C23.986 15.668 24 15.259 24 12c0-3.259-.014-3.668-.072-7.052-.155-3.362-1.898-5.049-5.26-5.204C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                </svg>
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors duration-200 border border-white/10 shadow-md touch-manipulation"
+              >
+                <svg className="w-5 h-5 text-white/60 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-9.019-7.243-11.018-3.869v-2zm-7.982 16h5v-16h-5v16zm7.982 0h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-9.019-7.243-11.018-3.869v-2h-4.968v16z" />
+                </svg>
+              </a>
+            </div> */}
           </div>
         </div>
 
-        {/* Bottom section */}
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-900/90 border-t border-white/10">
           <button
             onClick={() => {
@@ -233,15 +252,15 @@ const MobileMenu = memo(({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Close button */}
+        {/* Close Button */}
         <motion.button
           onClick={onClose}
           whileTap={{ scale: 0.9 }}
-          className="absolute top-4 right-4 p-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 shadow-md hover:shadow-lg transition-shadow duration-200 touch-manipulation"
+          className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-pink-600 shadow-md hover:shadow-lg transition-shadow duration-200 border border-white/10 touch-manipulation"
           aria-label="Close menu"
         >
           <svg
-            className="h-6 w-6 text-white"
+            className="w-5 h-5 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
