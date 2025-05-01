@@ -174,7 +174,7 @@ const Profile = () => {
       {/* Navigation Tabs */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12">
         <div className="flex flex-wrap gap-2 sm:gap-4 border-b border-white/10 overflow-x-auto">
-          {['overview', 'music', 'analytics', 'earnings'].map((tab) => (
+          {['overview', 'music'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
